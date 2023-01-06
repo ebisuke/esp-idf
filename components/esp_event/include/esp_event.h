@@ -520,6 +520,9 @@ esp_err_t esp_event_isr_post_to(esp_event_loop_handle_t event_loop,
  */
 esp_err_t esp_event_dump(FILE *file);
 
+esp_event_handler_t esp_event_get_default_handler(void);
+void esp_event_set_default_handler(esp_event_handler_t handler);
+
 #ifdef __cplusplus
 } // extern "C"
 #endif
