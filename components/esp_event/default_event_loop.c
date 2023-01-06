@@ -164,10 +164,10 @@ esp_err_t esp_event_loop_delete_default(void)
 
     return ESP_OK;
 }
-esp_event_handler_t esp_event_get_default_handler(void){
+esp_event_loop_handle_t esp_event_get_default_loop_handle(void){
     return s_default_loop;
 }
-void esp_event_set_default_handler(esp_event_handler_t handler){
+void esp_event_set_default_loop_handle(esp_event_loop_handle_t handler){
     s_default_loop = handler;
 }
 #if !CONFIG_IDF_TARGET_LINUX
