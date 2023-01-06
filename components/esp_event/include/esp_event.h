@@ -79,7 +79,6 @@ esp_err_t esp_event_loop_delete(esp_event_loop_handle_t event_loop);
  *  - Others: Fail
  */
 esp_err_t esp_event_loop_create_default(void);
-esp_err_t esp_event_loop_create_default_noauto(void);
 
 /**
  * @brief Delete the default event loop
@@ -520,9 +519,6 @@ esp_err_t esp_event_isr_post_to(esp_event_loop_handle_t event_loop,
  *  - Others: Fail
  */
 esp_err_t esp_event_dump(FILE *file);
-
-esp_event_loop_handle_t esp_event_get_default_loop_handle(void);
-void esp_event_set_default_loop_handle(esp_event_loop_handle_t handler);
 
 #ifdef __cplusplus
 } // extern "C"

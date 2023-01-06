@@ -98,31 +98,8 @@ esp_err_t esp_event_isr_post(esp_event_base_t event_base, int32_t event_id,
 }
 #endif
 
-esp_err_t esp_event_loop_create_default_noauto()
-{
-    if (s_default_loop) {
-        return ESP_ERR_INVALID_STATE;
-    }
 
-    esp_event_loop_args_t loop_args = {
-        .queue_size = CONFIG_ESP_SYSTEM_EVENT_QUEUE_SIZE,
-        .task_name = NULL,
-        .task_stack_size = ESP_TASKD_EVENT_STACK,
-        .task_priority = ESP_TASKD_EVENT_PRIO,
-        .task_core_id = 0
-    };
-
-    esp_err_t err;
-
-    err = esp_event_loop_create(&loop_args, &s_default_loop);
-    if (err != ESP_OK) {
-        return err;
-    }
-
-    return ESP_OK;
-}
-
-esp_err_t esp_event_loop_create_default()
+esp_err_t esp_event_loop_create_default(void)
 {
     if (s_default_loop) {
         return ESP_ERR_INVALID_STATE;
@@ -164,12 +141,7 @@ esp_err_t esp_event_loop_delete_default(void)
 
     return ESP_OK;
 }
-esp_event_loop_handle_t esp_event_get_default_loop_handle(void){
-    return s_default_loop;
-}
-void esp_event_set_default_loop_handle(esp_event_loop_handle_t handler){
-    s_default_loop = handler;
-}
+
 #if !CONFIG_IDF_TARGET_LINUX
 /* Include the code to forward legacy system_event_t events to the this default
  * event loop.
