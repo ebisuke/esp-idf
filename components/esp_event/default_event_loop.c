@@ -99,7 +99,7 @@ esp_err_t esp_event_isr_post(esp_event_base_t event_base, int32_t event_id,
 #endif
 
 
-esp_err_t esp_event_loop_create_default(bool auto_event_dispatch)
+esp_err_t esp_event_loop_create_default()
 {
     if (s_default_loop) {
         return ESP_ERR_INVALID_STATE;
@@ -107,7 +107,7 @@ esp_err_t esp_event_loop_create_default(bool auto_event_dispatch)
 
     esp_event_loop_args_t loop_args = {
         .queue_size = CONFIG_ESP_SYSTEM_EVENT_QUEUE_SIZE,
-        .task_name = auto_event_dispatch?"sys_evt":NULL,
+        .task_name = "sys_evt",
         .task_stack_size = ESP_TASKD_EVENT_STACK,
         .task_priority = ESP_TASKD_EVENT_PRIO,
         .task_core_id = 0
@@ -122,7 +122,29 @@ esp_err_t esp_event_loop_create_default(bool auto_event_dispatch)
 
     return ESP_OK;
 }
+esp_err_t esp_event_loop_create_default_noauto()
+{
+    if (s_default_loop) {
+        return ESP_ERR_INVALID_STATE;
+    }
 
+    esp_event_loop_args_t loop_args = {
+            .queue_size = CONFIG_ESP_SYSTEM_EVENT_QUEUE_SIZE,
+            .task_name = NULL,
+            .task_stack_size = ESP_TASKD_EVENT_STACK,
+            .task_priority = ESP_TASKD_EVENT_PRIO,
+            .task_core_id = 0
+    };
+
+    esp_err_t err;
+
+    err = esp_event_loop_create(&loop_args, &s_default_loop);
+    if (err != ESP_OK) {
+        return err;
+    }
+
+    return ESP_OK;
+}
 esp_err_t esp_event_loop_delete_default(void)
 {
     if (!s_default_loop) {
